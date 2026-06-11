@@ -23,3 +23,8 @@
       regexp: "^(\\s*SystemdCgroup\\s*=\\s*).*"
       replace: \1true
 
+  - name: start containerd
+    systemd:
+      name: containerd
+      state: startd
+      enabled: true
