@@ -7,6 +7,7 @@ k8s_packages:
 - kubelet_1.34.8-1.1_amd64.deb  
 - ipset_7.19-1ubuntu2_amd64.deb
 - ipvsadm_1%3a1.31-1ubuntu0.1_amd64.deb
+- kubeadm_1.34.8-1.1_amd64.deb
 
 
 k8s_controll_packages:
