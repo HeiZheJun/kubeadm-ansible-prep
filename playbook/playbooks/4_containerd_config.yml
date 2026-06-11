@@ -2,11 +2,6 @@
 - name:  containerd config init
   hosts: all
   become: yes
-  handlers:
-  - name: restart containerd
-    systemd:
-      name: containerd
-      state: restart
   tasks:
   - name: create containerd config directory
     file:
@@ -27,4 +22,4 @@
       path: /etc/containerd/config.toml
       regexp: "^(\\s*SystemdCgroup\\s*=\\s*).*"
       replace: \1true
-    notify: restart containerd
+
