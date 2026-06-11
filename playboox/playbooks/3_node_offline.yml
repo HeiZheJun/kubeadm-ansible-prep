@@ -2,6 +2,8 @@
 - name: node install package
   hosts: node
   become: yes
+  vars_files:
+  - vars/package.yml
   tasks:
   - name: no inetnet kubeadm node package install
     block:

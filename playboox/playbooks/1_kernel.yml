@@ -11,13 +11,7 @@
       modprobe:
         name: "{{ item }}"
         state: present
-      loop:
-        - br_netfilter
-        - nf_conntrack
-        - ip_vs
-        - ip_vs_rr
-        - ip_vs_wrr
-        - ip_vs_sh
+      loop: "{{ kernel_modules }}"
 
     - name: Persist modules at boot
       lineinfile:
@@ -25,13 +19,8 @@
         line: "{{ item }}"
         state: present
         create: yes 
-      loop:
-        - br_netfilter
-        - nf_conntrack
-        - ip_vs
-        - ip_vs_rr
-        - ip_vs_wrr
-        - ip_vs_sh
+      loop: "{{ kernel_modules }}"
+
   - name: Edit Kernel runtime
     block:
     - name: edit forward

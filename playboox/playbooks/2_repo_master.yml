@@ -3,7 +3,7 @@
   hosts: master
   become: yes
   vars_files:
-  - package.yml
+  - vars/package.yml
   tasks:
   - name: import kubeadm repo gpg
     shell: curl -fsSL https://pkgs.k8s.io/core:/stable:/v1.34/deb/Release.key | sudo gpg --dearmor -o /etc/apt/keyrings/kubernetes-apt-keyring.gpg
