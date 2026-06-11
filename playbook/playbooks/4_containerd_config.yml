@@ -2,6 +2,12 @@
 - name:  containerd config init
   hosts: all
   become: yes
+  handlers:
+  - name: restart containerd
+    systemd:
+      name: containerd
+      state: restarted
+    
   tasks:
   - name: create containerd config directory
     file:
@@ -22,16 +28,17 @@
       path: /etc/containerd/config.toml
       regexp: "^(\\s*SystemdCgroup\\s*=\\s*).*"
       replace: \1true
-  
+    notify: restart containerd
+    
   - name: set pause images url
     replace:
       path: /etc/containerd/config.toml
-      regexp: "registry.k8s.io/pause:3.10.1"
-      replace: registry.aliyuncs.com/google_containers
-    
+      regexp: "registry.k8s.io/pause"
+      replace: registry.aliyuncs.com/google_containers/pause
+    notify: restart containerd    
 
   - name: start containerd
     systemd:
       name: containerd
-      state: startd
+      state: started
       enabled: true
