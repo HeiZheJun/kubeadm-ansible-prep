@@ -1,0 +1,43 @@
+---
+- name: kernel set
+  hosts: all
+  become: yes
+  vars_files:
+  - vars/kernel.yml
+  tasks:
+  - name: configuration modules
+    block: 
+    - name: Load kernel modules (temporary)
+      modprobe:
+        name: "{{ item }}"
+        state: present
+      loop:
+        - br_netfilter
+        - nf_conntrack
+        - ip_vs
+        - ip_vs_rr
+        - ip_vs_wrr
+        - ip_vs_sh
+
+    - name: Persist modules at boot
+      lineinfile:
+        path: /etc/modules-load.d/modules.conf
+        line: "{{ item }}"
+        state: present
+        create: yes 
+      loop:
+        - br_netfilter
+        - nf_conntrack
+        - ip_vs
+        - ip_vs_rr
+        - ip_vs_wrr
+        - ip_vs_sh
+  - name: Edit Kernel runtime
+    block:
+    - name: edit forward
+      sysctl:
+        name: net.ipv4.ip_forward
+        value: 1
+        state: present
+        sysctl_file: /etc/sysctl.d/forward.conf
+        reload: yes

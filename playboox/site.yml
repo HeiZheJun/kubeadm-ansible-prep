@@ -1,0 +1,5 @@
+---
+- import_playbook: playbooks/1_kernel.yml
+- import_playbook: playbooks/2_repo_master.yml
+- import_playbook: playbooks/3_node_offline.yml
+- import_playbook: playbooks/4_containerd_config.yml

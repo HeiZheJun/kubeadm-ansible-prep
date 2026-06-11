@@ -1,0 +1,24 @@
+---
+- name: set kubeadm repo
+  hosts: master
+  become: yes
+  vars_files:
+  - package.yml
+  tasks:
+  - name: import kubeadm repo gpg
+    shell: curl -fsSL https://pkgs.k8s.io/core:/stable:/v1.34/deb/Release.key | sudo gpg --dearmor -o /etc/apt/keyrings/kubernetes-apt-keyring.gpg
+    args:
+      creates: /etc/apt/keyrings/kubernetes-apt-keyring.gpg
+
+  - name: import kubeadm repo
+    apt_repository:
+      repo: "deb [signed-by=/etc/apt/keyrings/kubernetes-apt-keyring.gpg] https://pkgs.k8s.io/core:/stable:/v1.34/deb/ /"
+      state: present
+      update_cache: yes
+      filename: kubernetes
+
+  - name: master controll install
+    apt:
+      name: "{{ item }}"
+      state: present
+    loop: "{{ k8s_controll_packages }}"

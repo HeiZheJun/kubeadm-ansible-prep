@@ -1,0 +1,32 @@
+---
+- name: node install package
+  hosts: node
+  become: yes
+  tasks:
+  - name: no inetnet kubeadm node package install
+    block:
+    - name: creat driectory
+      file:
+        path: /opt/kubeadm/files
+        state: directory
+        owner: root
+        group: root
+        mode: 755
+    - name: copy packages file
+      copy:
+        src: "{{ item }}"
+        dest: /opt/kubeadm/files
+        mode: 0755
+      loop: "{{ k8s_packages }}"
+
+    - name: install packages
+      apt:
+        deb: "/opt/kubeadm/files/{{ item }}"
+        state: present
+      loop: "{{ k8s_packages }}"
+    
+    - name: delete directory
+      file:
+        path: /opt/kubeadm
+        state: absent
+        recurse: true

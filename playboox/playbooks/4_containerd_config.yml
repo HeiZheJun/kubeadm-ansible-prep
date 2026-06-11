@@ -1,0 +1,23 @@
+---
+- name:  containerd config init
+  hosts: all
+  become: yes
+  handlers:
+  - name: restart containerd
+    systemd:
+      name: containerd
+      state: restart
+  tasks:
+  - name: import default config
+    shell: | 
+      containerd config default > /etc/containerd/config.toml
+    args:
+      creates: /etc/containerd/config.toml
+  
+  - name: configuration Cgroup
+    replace:
+      path: /etc/containerd/config.toml
+      regex: "^(\\s*SystemdCgroup\\s*=\\s*).*"
+      replace: \1true
+    notify: restart containerd
+    
