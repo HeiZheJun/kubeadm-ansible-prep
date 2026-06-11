@@ -31,4 +31,3 @@
       file:
         path: /opt/kubeadm
         state: absent
-        recurse: true
