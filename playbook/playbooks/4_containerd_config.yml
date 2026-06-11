@@ -25,6 +25,6 @@
   - name: configuration Cgroup
     replace:
       path: /etc/containerd/config.toml
-      regex: "^(\\s*SystemdCgroup\\s*=\\s*).*"
+      regexp: "^(\\s*SystemdCgroup\\s*=\\s*).*"
       replace: \1true
     notify: restart containerd
