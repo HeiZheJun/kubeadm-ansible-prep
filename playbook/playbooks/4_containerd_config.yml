@@ -17,11 +17,18 @@
     args:
       creates: /etc/containerd/config.toml
   
-  - name: configuration Cgroup
+  - name: set SystemdCgroup true
     replace:
       path: /etc/containerd/config.toml
       regexp: "^(\\s*SystemdCgroup\\s*=\\s*).*"
       replace: \1true
+  
+  - name: set pause images url
+    replace:
+      path: /etc/containerd/config.toml
+      regexp: "registry.k8s.io/pause:3.10.1"
+      replace: registry.aliyuncs.com/google_containers
+    
 
   - name: start containerd
     systemd:
