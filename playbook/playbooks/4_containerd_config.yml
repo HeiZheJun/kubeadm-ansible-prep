@@ -20,4 +20,3 @@
       regex: "^(\\s*SystemdCgroup\\s*=\\s*).*"
       replace: \1true
     notify: restart containerd
-    
